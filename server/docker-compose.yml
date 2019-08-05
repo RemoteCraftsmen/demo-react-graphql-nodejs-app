@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    ports:
+      - 127.0.0.1:27017:27017
+    volumes:
+      - db:/data/db
+    env_file: ./docker/mongodb/config.env
+    networks:
+      - global
+
+  redis:
+    image: redis:latest
+    container_name: redis.react-todo.docker
+    networks:
+      - global
+    ports:
+      - 127.0.0.1:6379:6379
+
+volumes:
+  db:
+
+networks:
+  global:
