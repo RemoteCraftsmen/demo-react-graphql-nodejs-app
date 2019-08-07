@@ -1,47 +1,56 @@
 import React, { Component } from "react";
-import { styled } from "@material-ui/styles";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
+
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
   Container,
-  Button,
   TextField,
+  Button,
   Grid,
   Typography,
   Link,
   Avatar
 } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 
-const LoginButton = styled(Button)({
-  marginTop: "20px",
-  marginBottom: "10px",
-  paddingTop: 15,
-  paddingBottom: 15
+const styles = theme => ({
+  root: {
+    marginTop: "100px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  avatar: {
+    margin: "10px",
+    backgroundColor: "#1a49a4"
+  },
+  form: {
+    marginTop: theme.spacing(2)
+  },
+  button: {
+    margin: theme.spacing(3, 0, 2),
+    padding: theme.spacing(1.5)
+  }
 });
 
-const Wrapper = styled(Container)({
-  marginTop: "100px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center"
-});
-
-const LoginAvatar = styled(Avatar)({
-  margin: "10px",
-  backgroundColor: "#1a49a4"
-});
+const LOGIN_MUTATION = gql`
+  mutation($email: String!, $password: String!) {
+    signIn(email: $email, password: $password) {
+      id
+    }
+  }
+`;
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      errors: []
-    };
-  }
+  state = {
+    email: "",
+    password: "",
+    errors: []
+  };
 
   onChange = e => {
-    this.setState({ email: e.target.value });
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   onSubmit = e => {
@@ -49,16 +58,18 @@ class Login extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+    const { email, password } = this.state;
     return (
-      <Wrapper maxWidth="xs">
-        <LoginAvatar justify="center">
+      <Container maxWidth="xs" className={classes.root}>
+        <Avatar justify="center" className={classes.avatar}>
           <LockOutlinedIcon />
-        </LoginAvatar>
+        </Avatar>
         <Typography component="h1" variant="h4" align="center">
           Login
         </Typography>
-        <form>
-          <Grid style={{ marginTop: "15px" }} container spacing={2}>
+        <form className={classes.form}>
+          <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 autoComplete="email"
@@ -69,6 +80,7 @@ class Login extends Component {
                 id="email"
                 label="Email"
                 value={this.state.email}
+                onChange={this.onChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -80,31 +92,52 @@ class Login extends Component {
                 fullWidth
                 id="password"
                 label="Password"
+                type="password"
                 value={this.state.password}
+                onChange={this.onChange}
               />
             </Grid>
           </Grid>
-          <LoginButton
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={this.onSumbit}
+          <Mutation
+            mutation={LOGIN_MUTATION}
+            variables={{ email, password }}
+            errorPolicy="all"
           >
-            SIGN IN
-          </LoginButton>
+            {mutation => (
+              <Button
+                className={classes.button}
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={e => {
+                  e.preventDefault();
+                  mutation().then(res => {
+                    if (!res.errors) {
+                      this.props.history.push("/dashboard");
+                    } else {
+                      this.setState({ errors: res.errors });
+                      console.log(this.errors);
+                    }
+                  });
+                }}
+              >
+                SIGN IN
+              </Button>
+            )}
+          </Mutation>
         </form>
 
         <Grid container justify="flex-end">
           <Grid item>
-            <Link href="#/register" variant="body2">
+            <Link href="/signup" variant="body2">
               Dont't have an account? Sign up
             </Link>
           </Grid>
         </Grid>
-      </Wrapper>
+      </Container>
     );
   }
 }
 
-export default Login;
+export default withStyles(styles)(Login);

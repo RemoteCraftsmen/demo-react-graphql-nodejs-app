@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const { ApolloServer } = require("apollo-server-express");
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -9,6 +10,13 @@ const config = require("./config");
 const IN_PROD = config.app.env === "production";
 
 const app = express();
+
+const corsOptions = {
+  origin: "http://localhost:8080",
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 
 //MONGO:
 const options = {
@@ -65,10 +73,17 @@ const server = new ApolloServer({
           "request.credentials": "include"
         }
       },
-  context: ({ req, res }) => ({ req, res })
+  context: ({ req, res }) => ({ req, res }),
+  cors: corsOptions
 });
 
-server.applyMiddleware({ app });
+server.applyMiddleware({
+  app,
+  cors: {
+    origin: "http://localhost:8080",
+    credentials: true
+  }
+});
 
 app.listen({ port: config.app.port }, () =>
   console.log(`Server running on port ${config.app.port}`)

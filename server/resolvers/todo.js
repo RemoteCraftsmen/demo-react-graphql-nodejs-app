@@ -2,21 +2,24 @@ const { checkSignedIn } = require("../utils/auth");
 const Joi = require("joi");
 const User = require("../models/user");
 const Todo = require("../models/todo");
-const { createTodo } = require("../validators/todo");
+const { checkTodo } = require("../validators/todo");
 
 const todo = {
   Query: {
     todos: (root, args, { req }, info) => {
       checkSignedIn(req);
-
       return Todo.find({});
+    },
+    userTodos: (root, args, { req }, info) => {
+      checkSignedIn(req);
+      return Todo.find({ user: req.session.userId });
     }
   },
   Mutation: {
     createTodo: async (root, args, { req }, info) => {
       checkSignedIn(req);
 
-      await Joi.validate(args, createTodo, { abortEarly: false });
+      await Joi.validate(args, checkTodo, { abortEarly: false });
       const { userId } = req.session;
       const todo = await Todo.create({
         description: args.description,

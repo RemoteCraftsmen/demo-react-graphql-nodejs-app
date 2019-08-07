@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-exports.createTodo = Joi.object().keys({
+exports.checkTodo = Joi.object().keys({
   description: Joi.string()
     .min(2)
     .max(100)

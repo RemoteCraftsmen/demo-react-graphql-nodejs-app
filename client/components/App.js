@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-import Dashboard from "./Dashboard";
+import TodoPanel from "./TodoPanel";
 import Signup from "./Signup";
 import Login from "./Login";
 import Navbar from "./Navbar";
@@ -11,9 +11,10 @@ class App extends Component {
       <div>
         <Navbar />
         <Switch>
-          <Route exact path="/" component={Dashboard} />
+          <Route exact path="/" component={Login} />
+          <Route exact path="/dashboard" component={TodoPanel} />
           <Route exact path="/signup" component={Signup} />
-          <Route path="/login" component={Login} />
+          <Route exact path="/login" component={Login} />
         </Switch>
       </div>
     );

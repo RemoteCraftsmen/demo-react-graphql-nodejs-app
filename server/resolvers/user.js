@@ -30,7 +30,7 @@ const user = {
       Auth.checkSignedOut(req);
       await Joi.validate(args, signUp, { abortEarly: false });
       const user = await User.create(args);
-      req.session.userId = user.id;
+      //req.session.userId = user.id;
       return user;
     },
     signIn: async (root, args, { req }, info) => {
