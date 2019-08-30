@@ -71,7 +71,9 @@ class AddTodo extends Component {
                 e.preventDefault();
                 addTodo()
                   .then(res => {
-                    this.state.description = "";
+                    this.setState({
+                      description: ""
+                    });
                   })
                   .catch(err => {
                     console.log(err);

@@ -10,7 +10,8 @@ import {
   Grid,
   Typography,
   Link,
-  Avatar
+  Avatar,
+  FormLabel
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -97,6 +98,9 @@ class Login extends Component {
                 onChange={this.onChange}
               />
             </Grid>
+            <Grid item xs={12}>
+              <FormLabel>{this.state.errors}</FormLabel>
+            </Grid>
           </Grid>
           <Mutation
             mutation={LOGIN_MUTATION}
@@ -112,14 +116,15 @@ class Login extends Component {
                 color="primary"
                 onClick={e => {
                   e.preventDefault();
-                  mutation().then(res => {
-                    if (!res.errors) {
+                  mutation()
+                    .then(res => {
                       this.props.history.push("/dashboard");
-                    } else {
-                      this.setState({ errors: res.errors });
-                      console.log(this.errors);
-                    }
-                  });
+                    })
+                    .catch(err => {
+                      this.setState({
+                        errors: err.message.replace("GraphQL error:", "").trim()
+                      });
+                    });
                 }}
               >
                 SIGN IN
