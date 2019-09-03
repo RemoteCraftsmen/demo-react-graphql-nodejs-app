@@ -28,7 +28,6 @@ class Navbar extends Component {
         {({ loading, error, data }) => {
           if (loading) return <div>Fetching</div>;
           if (error) console.log(error);
-          console.log(data);
           return (
             <AppBar position="static">
               <Toolbar component="nav" className={classes.root}>

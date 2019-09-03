@@ -16,19 +16,16 @@ const corsOptions = {
   credentials: true
 };
 
-app.use(cors(corsOptions));
-
 //MONGO:
 const options = {
   useNewUrlParser: true,
+  useFindAndModify: false,
   reconnectTries: Number.MAX_VALUE,
   reconnectInterval: 500,
   connectTimeoutMS: 10000
 };
 
-const url = `mongodb://${config.db.user}:${config.db.pass}@${config.db.host}:${
-  config.db.port
-}/${config.db.name}?authSource=admin`;
+const url = `mongodb://${config.db.user}:${config.db.pass}@${config.db.host}:${config.db.port}/${config.db.name}?authSource=admin`;
 
 mongoose.Promise = global.Promise;
 mongoose
@@ -79,10 +76,7 @@ const server = new ApolloServer({
 
 server.applyMiddleware({
   app,
-  cors: {
-    origin: "http://localhost:8080",
-    credentials: true
-  }
+  cors: corsOptions
 });
 
 app.listen({ port: config.app.port }, () =>

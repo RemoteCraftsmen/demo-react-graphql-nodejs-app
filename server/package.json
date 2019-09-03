@@ -1,0 +1,29 @@
+{
+  "name": "react-node-mongo-graphql-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Ewelina Szczotka",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^4.1.1",
+    "nodemon": "^1.19.1",
+    "express-session": "^1.16.2"
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.8.1",
+    "bcryptjs": "^2.4.3",
+    "connect-redis": "^3.4.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "graphql": "^14.4.2",
+    "joi": "^14.3.1",
+    "mongoose": "^5.6.7"
+  }
+}
