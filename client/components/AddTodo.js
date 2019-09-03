@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-import { GET_TODOS_QUERY } from "./TodoList";
 import {
   TextField,
   InputAdornment,
@@ -10,16 +8,7 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import AddCircle from "@material-ui/icons/AddCircle";
-
-const ADD_TODO = gql`
-  mutation createTodo($description: String!) {
-    createTodo(description: $description) {
-      id
-      description
-      completed
-    }
-  }
-`;
+import { ADD_TODO_MUTATION, GET_TODOS_QUERY } from "./TodoRequests";
 
 const styles = theme => ({
   root: {
@@ -52,7 +41,7 @@ class AddTodo extends Component {
     const { classes } = this.props;
     return (
       <Mutation
-        mutation={ADD_TODO}
+        mutation={ADD_TODO_MUTATION}
         variables={{ description }}
         errorPolicy="all"
         refetchQueries={() => {

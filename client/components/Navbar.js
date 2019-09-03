@@ -1,24 +1,10 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { Query } from "react-apollo";
 import { withStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Link } from "@material-ui/core";
-
-const LOGGED_IN_USER = gql`
-  query Me {
-    me {
-      id
-    }
-  }
-`;
-
-const SIGN_OUT = gql`
-  mutation signOut {
-    signOut
-  }
-`;
+import { IS_LOGGED_IN_QUERY, SIGNOUT_MUTATION } from "./UserRequests";
 
 const styles = theme => ({
   root: {
@@ -38,14 +24,15 @@ class Navbar extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Query query={LOGGED_IN_USER}>
+      <Query query={IS_LOGGED_IN_QUERY}>
         {({ loading, error, data }) => {
           if (loading) return <div>Fetching</div>;
           if (error) console.log(error);
+          console.log(data);
           return (
             <AppBar position="static">
               <Toolbar component="nav" className={classes.root}>
-                {data !== undefined ? (
+                {data.me !== null ? (
                   <React.Fragment>
                     <Link
                       noWrap
@@ -56,11 +43,11 @@ class Navbar extends Component {
                       DASHBOARD
                     </Link>
                     <Mutation
-                      mutation={SIGN_OUT}
+                      mutation={SIGNOUT_MUTATION}
                       refetchQueries={() => {
                         return [
                           {
-                            query: LOGGED_IN_USER
+                            query: IS_LOGGED_IN_QUERY
                           }
                         ];
                       }}
@@ -71,14 +58,13 @@ class Navbar extends Component {
                           component="button"
                           className={classes.navLink}
                           onClick={e => {
-                            signOut().then(res => {
-                              if (!res.errors) {
+                            signOut()
+                              .then(res => {
                                 this.props.history.push("/login");
-                              } else {
-                                this.setState({ errors: res.errors });
-                                console.log(this.errors);
-                              }
-                            });
+                              })
+                              .catch(err => {
+                                console.log(err.message);
+                              });
                           }}
                         >
                           LOGOUT

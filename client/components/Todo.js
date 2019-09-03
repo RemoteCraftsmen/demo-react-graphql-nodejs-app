@@ -8,25 +8,12 @@ import {
   Checkbox
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { GET_TODOS_QUERY } from "./TodoList";
-import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-
-const DELETE_TODO = gql`
-  mutation deleteTodo($id: ID!) {
-    deleteTodo(id: $id) {
-      id
-    }
-  }
-`;
-
-const UPDATE_TODO = gql`
-  mutation updateTodo($id: ID!, $completed: Boolean!) {
-    updateTodo(id: $id, completed: $completed) {
-      completed
-    }
-  }
-`;
+import {
+  GET_TODOS_QUERY,
+  DELETE_TODO_MUTATION,
+  UPDATE_TODO_MUTATION
+} from "./TodoRequests";
 
 class Todo extends Component {
   render() {
@@ -41,7 +28,7 @@ class Todo extends Component {
       >
         <ListItemIcon>
           <Mutation
-            mutation={UPDATE_TODO}
+            mutation={UPDATE_TODO_MUTATION}
             variables={{ id, completed: !completed }}
             errorPolicy="all"
             refetchQueries={() => {
@@ -72,7 +59,7 @@ class Todo extends Component {
         <ListItemText primary={description} />
         <ListItemSecondaryAction>
           <Mutation
-            mutation={DELETE_TODO}
+            mutation={DELETE_TODO_MUTATION}
             variables={{ id }}
             errorPolicy="all"
             refetchQueries={() => {

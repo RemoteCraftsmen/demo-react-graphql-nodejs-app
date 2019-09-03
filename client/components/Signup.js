@@ -12,7 +12,7 @@ import {
   FormLabel
 } from "@material-ui/core";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import { SIGNUP_MUTATION } from "./UserRequests";
 
 const styles = theme => ({
   root: {
@@ -33,24 +33,6 @@ const styles = theme => ({
     padding: theme.spacing(1.5)
   }
 });
-
-const SIGNUP_MUTATION = gql`
-  mutation(
-    $email: String!
-    $password: String!
-    $firstName: String!
-    $lastName: String!
-  ) {
-    signUp(
-      email: $email
-      password: $password
-      firstName: $firstName
-      lastName: $lastName
-    ) {
-      id
-    }
-  }
-`;
 
 class Register extends Component {
   state = {
@@ -140,8 +122,6 @@ class Register extends Component {
             mutation={SIGNUP_MUTATION}
             variables={{ email, password, firstName, lastName }}
             errorPolicy="all"
-
-            //onCompleted={this.onSubmit}
           >
             {mutation => (
               <Button

@@ -1,18 +1,8 @@
 import React, { Component } from "react";
 import Todo from "./Todo";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
 import { List } from "@material-ui/core";
-
-export const GET_TODOS_QUERY = gql`
-  query TodosQuery {
-    userTodos {
-      id
-      description
-      completed
-    }
-  }
-`;
+import { GET_TODOS_QUERY } from "./TodoRequests";
 
 class TodoList extends Component {
   render() {

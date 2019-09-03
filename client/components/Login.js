@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
@@ -14,6 +13,7 @@ import {
   FormLabel
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import { LOGIN_MUTATION, IS_LOGGED_IN_QUERY } from "./UserRequests";
 
 const styles = theme => ({
   root: {
@@ -34,14 +34,6 @@ const styles = theme => ({
     padding: theme.spacing(1.5)
   }
 });
-
-const LOGIN_MUTATION = gql`
-  mutation($email: String!, $password: String!) {
-    signIn(email: $email, password: $password) {
-      id
-    }
-  }
-`;
 
 class Login extends Component {
   state = {
@@ -79,6 +71,7 @@ class Login extends Component {
                 required
                 fullWidth
                 id="email"
+                tyoe="email"
                 label="Email"
                 value={this.state.email}
                 onChange={this.onChange}
@@ -106,6 +99,13 @@ class Login extends Component {
             mutation={LOGIN_MUTATION}
             variables={{ email, password }}
             errorPolicy="all"
+            refetchQueries={() => {
+              return [
+                {
+                  query: IS_LOGGED_IN_QUERY
+                }
+              ];
+            }}
           >
             {mutation => (
               <Button
@@ -132,11 +132,10 @@ class Login extends Component {
             )}
           </Mutation>
         </form>
-
         <Grid container justify="flex-end">
           <Grid item>
             <Link href="/signup" variant="body2">
-              Dont't have an account? Sign up
+              Don't have an account? Sign up
             </Link>
           </Grid>
         </Grid>

@@ -8,7 +8,6 @@ const Auth = require("../utils/auth");
 const user = {
   Query: {
     me: (root, args, { req }, info) => {
-      Auth.checkSignedIn(req);
       return User.findById(req.session.userId);
     },
     users: (root, args, { req }, info) => {
@@ -30,7 +29,7 @@ const user = {
       Auth.checkSignedOut(req);
       await Joi.validate(args, signUp, { abortEarly: false });
       const user = await User.create(args);
-      //req.session.userId = user.id;
+      //req.session.userId = user.id; Logs in user after sign up
       return user;
     },
     signIn: async (root, args, { req }, info) => {
