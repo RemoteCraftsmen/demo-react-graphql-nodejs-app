@@ -8,16 +8,35 @@ import {
   Checkbox
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Mutation } from "react-apollo";
-import {
-  GET_TODOS_QUERY,
-  DELETE_TODO_MUTATION,
-  UPDATE_TODO_MUTATION
-} from "./TodoRequests";
+import { graphql } from "react-apollo";
+import { DELETE_TODO_MUTATION, UPDATE_TODO_MUTATION } from "./TodoRequests";
 
 class Todo extends Component {
+  updateTodo = e => {
+    e.preventDefault();
+    this.props.mutate({
+      mutation: UPDATE_TODO_MUTATION,
+      variables: {
+        id: this.props.todo.id,
+        completed: !this.props.todo.completed
+      },
+      refetchQueries: ["TodosQuery"]
+    });
+  };
+
+  deleteTodo = e => {
+    e.preventDefault();
+    this.props.mutate({
+      mutation: DELETE_TODO_MUTATION,
+      variables: {
+        id: this.props.todo.id
+      },
+      refetchQueries: ["TodosQuery"]
+    });
+  };
+
   render() {
-    const { completed, description, id } = this.props.todo;
+    const { completed, description } = this.props.todo;
     return (
       <ListItem
         style={{
@@ -25,70 +44,36 @@ class Todo extends Component {
         }}
         button
         dense
+        onClick={e => {
+          this.updateTodo(e);
+        }}
       >
         <ListItemIcon>
-          <Mutation
-            mutation={UPDATE_TODO_MUTATION}
-            variables={{ id, completed: !completed }}
-            errorPolicy="all"
-            refetchQueries={() => {
-              return [
-                {
-                  query: GET_TODOS_QUERY
-                }
-              ];
+          <Checkbox
+            edge="start"
+            checked={completed}
+            tabIndex={-1}
+            disableRipple
+            onChange={e => {
+              this.updateTodo(e);
             }}
-          >
-            {updateTodo => (
-              <Checkbox
-                edge="start"
-                checked={completed}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{}}
-                onChange={e => {
-                  e.preventDefault();
-                  updateTodo().catch(err => {
-                    console.log(err);
-                  });
-                }}
-              />
-            )}
-          </Mutation>
+          />
         </ListItemIcon>
         <ListItemText primary={description} />
         <ListItemSecondaryAction>
-          <Mutation
-            mutation={DELETE_TODO_MUTATION}
-            variables={{ id }}
-            errorPolicy="all"
-            refetchQueries={() => {
-              return [
-                {
-                  query: GET_TODOS_QUERY
-                }
-              ];
+          <IconButton
+            edge="end"
+            aria-label="delete"
+            onClick={e => {
+              this.deleteTodo(e);
             }}
           >
-            {deleteTodo => (
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={e => {
-                  e.preventDefault();
-                  deleteTodo().catch(err => {
-                    console.log(err);
-                  });
-                }}
-              >
-                <DeleteIcon />
-              </IconButton>
-            )}
-          </Mutation>
+            <DeleteIcon />
+          </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
     );
   }
 }
 
-export default Todo;
+export default graphql(UPDATE_TODO_MUTATION, DELETE_TODO_MUTATION)(Todo);

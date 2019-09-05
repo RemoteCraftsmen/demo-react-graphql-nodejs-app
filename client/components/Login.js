@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-
+import { Link as RouterLink } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
   Container,
@@ -13,7 +12,8 @@ import {
   FormLabel
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { LOGIN_MUTATION, IS_LOGGED_IN_QUERY } from "./UserRequests";
+import { graphql } from "react-apollo";
+import { LOGIN_MUTATION } from "./UserRequests";
 
 const styles = theme => ({
   root: {
@@ -47,12 +47,29 @@ class Login extends Component {
   };
 
   onSubmit = e => {
+    const { email, password } = this.state;
     e.preventDefault();
+    this.props
+      .mutate({
+        mutation: LOGIN_MUTATION,
+        variables: {
+          email,
+          password
+        },
+        refetchQueries: ["Me"]
+      })
+      .then(() => {
+        this.props.history.push("/dashboard");
+      })
+      .catch(err => {
+        this.setState({
+          errors: err.message.replace("GraphQL error:", "").trim()
+        });
+      });
   };
 
   render() {
     const { classes } = this.props;
-    const { email, password } = this.state;
     return (
       <Container maxWidth="xs" className={classes.root}>
         <Avatar justify="center" className={classes.avatar}>
@@ -61,10 +78,16 @@ class Login extends Component {
         <Typography component="h1" variant="h4" align="center">
           Login
         </Typography>
-        <form className={classes.form}>
+        <form
+          className={classes.form}
+          onSubmit={e => {
+            this.onSubmit(e);
+          }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                autoFocus
                 autoComplete="email"
                 name="email"
                 variant="outlined"
@@ -95,46 +118,19 @@ class Login extends Component {
               <FormLabel>{this.state.errors}</FormLabel>
             </Grid>
           </Grid>
-          <Mutation
-            mutation={LOGIN_MUTATION}
-            variables={{ email, password }}
-            errorPolicy="all"
-            refetchQueries={() => {
-              return [
-                {
-                  query: IS_LOGGED_IN_QUERY
-                }
-              ];
-            }}
+          <Button
+            className={classes.button}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
           >
-            {mutation => (
-              <Button
-                className={classes.button}
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={e => {
-                  e.preventDefault();
-                  mutation()
-                    .then(res => {
-                      this.props.history.push("/dashboard");
-                    })
-                    .catch(err => {
-                      this.setState({
-                        errors: err.message.replace("GraphQL error:", "").trim()
-                      });
-                    });
-                }}
-              >
-                SIGN IN
-              </Button>
-            )}
-          </Mutation>
+            SIGN IN
+          </Button>
         </form>
         <Grid container justify="flex-end">
           <Grid item>
-            <Link href="/signup" variant="body2">
+            <Link component={RouterLink} to="/signup" variant="body2">
               Don't have an account? Sign up
             </Link>
           </Grid>
@@ -144,4 +140,4 @@ class Login extends Component {
   }
 }
 
-export default withStyles(styles)(Login);
+export default graphql(LOGIN_MUTATION)(withStyles(styles)(Login));

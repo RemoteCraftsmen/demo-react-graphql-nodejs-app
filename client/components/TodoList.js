@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Todo from "./Todo";
+import { GET_TODOS_QUERY } from "./TodoRequests";
 import { Query } from "react-apollo";
 import { List } from "@material-ui/core";
-import { GET_TODOS_QUERY } from "./TodoRequests";
 
 class TodoList extends Component {
   render() {

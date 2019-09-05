@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import { Mutation } from "react-apollo";
-import { Query } from "react-apollo";
+import { NavLink } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Link } from "@material-ui/core";
+import { AppBar, Toolbar } from "@material-ui/core";
+import { graphql } from "react-apollo";
+import { Query } from "react-apollo";
 import { IS_LOGGED_IN_QUERY, SIGNOUT_MUTATION } from "./UserRequests";
 
 const styles = theme => ({
@@ -11,16 +12,34 @@ const styles = theme => ({
     justifyContent: "center"
   },
   navLink: {
+    color: "white",
+    textDecoration: "none",
     padding: theme.spacing(3),
-    font: "18px Helvatica",
+    font: "19px Helvatica",
     "&:hover": {
-      color: "white",
-      textDecoration: "none"
+      fontWeight: "550"
     }
+  },
+  active: {
+    borderBottom: "2px solid white"
   }
 });
 
 class Navbar extends Component {
+  signOut = () => {
+    this.props
+      .mutate({
+        mutation: SIGNOUT_MUTATION,
+        refetchQueries: ["Me"]
+      })
+      .then(() => {
+        this.props.history.push("/login");
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -29,66 +48,45 @@ class Navbar extends Component {
           if (loading) return <div>Fetching</div>;
           if (error) console.log(error);
           return (
-            <AppBar position="static">
+            <AppBar position="static" color="primary">
               <Toolbar component="nav" className={classes.root}>
                 {data.me !== null ? (
                   <React.Fragment>
-                    <Link
-                      noWrap
-                      href="/dashboard"
-                      color="inherit"
+                    <NavLink
+                      activeClassName={classes.active}
                       className={classes.navLink}
+                      to="/dashboard"
                     >
                       DASHBOARD
-                    </Link>
-                    <Mutation
-                      mutation={SIGNOUT_MUTATION}
-                      refetchQueries={() => {
-                        return [
-                          {
-                            query: IS_LOGGED_IN_QUERY
-                          }
-                        ];
+                    </NavLink>
+                    <NavLink
+                      activeClassName={classes.active}
+                      className={classes.navLink}
+                      component="button"
+                      to="/logout"
+                      onClick={() => {
+                        this.signOut();
                       }}
                     >
-                      {signOut => (
-                        <Link
-                          color="inherit"
-                          component="button"
-                          className={classes.navLink}
-                          onClick={e => {
-                            signOut()
-                              .then(res => {
-                                this.props.history.push("/login");
-                              })
-                              .catch(err => {
-                                console.log(err.message);
-                              });
-                          }}
-                        >
-                          LOGOUT
-                        </Link>
-                      )}
-                    </Mutation>
+                      LOGOUT
+                    </NavLink>
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
-                    <Link
-                      noWrap
-                      href="/signup"
-                      color="inherit"
+                    <NavLink
+                      activeClassName={classes.active}
                       className={classes.navLink}
+                      to="/signup"
                     >
                       SIGN UP
-                    </Link>
-                    <Link
-                      noWrap
-                      href="/login"
-                      color="inherit"
+                    </NavLink>
+                    <NavLink
+                      activeClassName={classes.active}
                       className={classes.navLink}
+                      to="/login"
                     >
                       LOGIN
-                    </Link>
+                    </NavLink>
                   </React.Fragment>
                 )}
               </Toolbar>
@@ -100,4 +98,6 @@ class Navbar extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(Navbar));
+export default graphql(SIGNOUT_MUTATION)(
+  withRouter(withStyles(styles)(Navbar))
+);

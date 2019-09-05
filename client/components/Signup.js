@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { withStyles } from "@material-ui/core/styles";
 import {
@@ -11,7 +12,7 @@ import {
   Avatar,
   FormLabel
 } from "@material-ui/core";
-import { Mutation } from "react-apollo";
+import { graphql } from "react-apollo";
 import { SIGNUP_MUTATION } from "./UserRequests";
 
 const styles = theme => ({
@@ -47,9 +48,31 @@ class Register extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  onSubmit = e => {
+    const { email, password, firstName, lastName } = this.state;
+    e.preventDefault();
+    this.props
+      .mutate({
+        mutation: SIGNUP_MUTATION,
+        variables: {
+          email,
+          password,
+          firstName,
+          lastName
+        }
+      })
+      .then(() => {
+        this.props.history.push("/login");
+      })
+      .catch(err => {
+        this.setState({
+          errors: err.message.replace("GraphQL error:", "").trim()
+        });
+      });
+  };
+
   render() {
     const { classes } = this.props;
-    const { email, password, firstName, lastName } = this.state;
     return (
       <Container maxWidth="xs" className={classes.root}>
         <Avatar justify="center" className={classes.avatar}>
@@ -58,11 +81,17 @@ class Register extends Component {
         <Typography component="h1" variant="h4" align="center">
           Sign up
         </Typography>
-        <form className={classes.form}>
+        <form
+          className={classes.form}
+          onSubmit={e => {
+            this.onSubmit(e);
+          }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="fname"
+                autoFocus
+                autoComplete="firstName"
                 name="firstName"
                 variant="outlined"
                 required
@@ -81,7 +110,7 @@ class Register extends Component {
                 id="lastName"
                 label="Last Name"
                 name="lastName"
-                autoComplete="lname"
+                autoComplete="lastName"
                 value={this.state.lastName}
                 onChange={this.onChange}
               />
@@ -118,39 +147,19 @@ class Register extends Component {
               <FormLabel>{this.state.errors}</FormLabel>
             </Grid>
           </Grid>
-          <Mutation
-            mutation={SIGNUP_MUTATION}
-            variables={{ email, password, firstName, lastName }}
-            errorPolicy="all"
+          <Button
+            className={classes.button}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
           >
-            {mutation => (
-              <Button
-                className={classes.button}
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={e => {
-                  e.preventDefault();
-                  mutation()
-                    .then(res => {
-                      this.props.history.push("/login");
-                    })
-                    .catch(err => {
-                      this.setState({
-                        errors: err.message.replace("GraphQL error:", "").trim()
-                      });
-                    });
-                }}
-              >
-                Sign up
-              </Button>
-            )}
-          </Mutation>
+            Sign up
+          </Button>
         </form>
         <Grid container justify="flex-end">
           <Grid item>
-            <Link href="/login" variant="body2">
+            <Link component={RouterLink} to="/login" variant="body2">
               Already have an account? Sign in
             </Link>
           </Grid>
@@ -160,4 +169,4 @@ class Register extends Component {
   }
 }
 
-export default withStyles(styles)(Register);
+export default graphql(SIGNUP_MUTATION)(withStyles(styles)(Register));

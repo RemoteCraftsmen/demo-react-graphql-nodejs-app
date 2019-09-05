@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Mutation } from "react-apollo";
 import {
   TextField,
   InputAdornment,
@@ -8,9 +7,10 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import AddCircle from "@material-ui/icons/AddCircle";
-import { ADD_TODO_MUTATION, GET_TODOS_QUERY } from "./TodoRequests";
+import { graphql } from "react-apollo";
+import { ADD_TODO_MUTATION } from "./TodoRequests";
 
-const styles = theme => ({
+const styles = {
   root: {
     padding: "4px 20px",
     display: "flex",
@@ -25,7 +25,7 @@ const styles = theme => ({
   btn: {
     marginRight: "10px"
   }
-});
+};
 
 class AddTodo extends Component {
   state = {
@@ -36,65 +36,61 @@ class AddTodo extends Component {
     this.setState({ description: e.target.value });
   };
 
+  addTodo = e => {
+    e.preventDefault();
+    this.props
+      .mutate({
+        mutation: ADD_TODO_MUTATION,
+        variables: {
+          description: this.state.description
+        },
+        refetchQueries: ["TodosQuery"]
+      })
+      .then(() => {
+        this.setState({
+          description: ""
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   render() {
     const { description } = this.state;
     const { classes } = this.props;
     return (
-      <Mutation
-        mutation={ADD_TODO_MUTATION}
-        variables={{ description }}
-        errorPolicy="all"
-        refetchQueries={() => {
-          return [
-            {
-              query: GET_TODOS_QUERY
-            }
-          ];
-        }}
-      >
-        {addTodo => (
-          <Container className={classes.root}>
-            <form
-              className={classes.input}
-              onSubmit={e => {
-                e.preventDefault();
-                addTodo()
-                  .then(res => {
-                    this.setState({
-                      description: ""
-                    });
-                  })
-                  .catch(err => {
-                    console.log(err);
-                  });
-              }}
-            >
-              <TextField
-                fullWidth
-                variant="outlined"
-                name="input"
-                label="Task"
-                autoFocus
-                required
-                placeholder="Something to do.."
-                value={description}
-                onChange={this.onChange}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end" className={classes.btn}>
-                      <IconButton edge="end" type="submit">
-                        <AddCircle color="error" />
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }}
-              />
-            </form>
-          </Container>
-        )}
-      </Mutation>
+      <Container className={classes.root}>
+        <form
+          className={classes.input}
+          onSubmit={e => {
+            this.addTodo(e);
+          }}
+        >
+          <TextField
+            fullWidth
+            variant="outlined"
+            name="input"
+            label="Task"
+            autoFocus
+            required
+            placeholder="Something to do.."
+            value={description}
+            onChange={this.onChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end" className={classes.btn}>
+                  <IconButton edge="end" type="submit">
+                    <AddCircle color="error" />
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+          />
+        </form>
+      </Container>
     );
   }
 }
 
-export default withStyles(styles)(AddTodo);
+export default graphql(ADD_TODO_MUTATION)(withStyles(styles)(AddTodo));
