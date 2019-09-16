@@ -13,11 +13,11 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { graphql } from "react-apollo";
-import { LOGIN_MUTATION } from "./UserRequests";
+import { LOGIN_MUTATION } from "../utils/UserRequests";
 
 const styles = theme => ({
   root: {
-    marginTop: "100px",
+    marginTop: theme.spacing(24),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -94,7 +94,7 @@ class Login extends Component {
                 required
                 fullWidth
                 id="email"
-                tyoe="email"
+                type="email"
                 label="Email"
                 value={this.state.email}
                 onChange={this.onChange}

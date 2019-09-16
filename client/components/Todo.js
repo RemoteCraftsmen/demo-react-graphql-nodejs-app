@@ -9,7 +9,10 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { graphql } from "react-apollo";
-import { DELETE_TODO_MUTATION, UPDATE_TODO_MUTATION } from "./TodoRequests";
+import {
+  DELETE_TODO_MUTATION,
+  UPDATE_TODO_MUTATION
+} from "../utils/TodoRequests";
 
 class Todo extends Component {
   updateTodo = e => {
@@ -51,6 +54,7 @@ class Todo extends Component {
         <ListItemIcon>
           <Checkbox
             edge="start"
+            color="primary"
             checked={completed}
             tabIndex={-1}
             disableRipple

@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar } from "@material-ui/core";
 import { graphql } from "react-apollo";
 import { Query } from "react-apollo";
-import { IS_LOGGED_IN_QUERY, SIGNOUT_MUTATION } from "./UserRequests";
+import { IS_LOGGED_IN_QUERY, SIGNOUT_MUTATION } from "../utils/UserRequests";
 
 const styles = theme => ({
   root: {

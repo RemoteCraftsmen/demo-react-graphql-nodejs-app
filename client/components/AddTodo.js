@@ -8,16 +8,16 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import AddCircle from "@material-ui/icons/AddCircle";
 import { graphql } from "react-apollo";
-import { ADD_TODO_MUTATION } from "./TodoRequests";
+import { ADD_TODO_MUTATION } from "../utils/TodoRequests";
 
 const styles = {
   root: {
-    padding: "4px 20px",
+    padding: "4px 0px",
     display: "flex",
     alignItems: "center",
     height: "50px",
-    width: "100%",
-    margin: "50px 0"
+    marginTop: "50px",
+    marginBottom: "30px"
   },
   input: {
     flex: 1
@@ -81,7 +81,7 @@ class AddTodo extends Component {
               endAdornment: (
                 <InputAdornment position="end" className={classes.btn}>
                   <IconButton edge="end" type="submit">
-                    <AddCircle color="error" />
+                    <AddCircle color="primary" />
                   </IconButton>
                 </InputAdornment>
               )

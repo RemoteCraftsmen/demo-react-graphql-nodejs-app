@@ -13,11 +13,11 @@ import {
   FormLabel
 } from "@material-ui/core";
 import { graphql } from "react-apollo";
-import { SIGNUP_MUTATION } from "./UserRequests";
+import { SIGNUP_MUTATION } from "../utils/UserRequests";
 
 const styles = theme => ({
   root: {
-    marginTop: "100px",
+    marginTop: theme.spacing(24),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
