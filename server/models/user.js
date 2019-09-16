@@ -6,7 +6,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: email => User.doesntExists({ email }),
-      message: () => "Email already exists!"
+      message: () => {
+        return new Error("Email already exists!");
+      }
     }
   },
   firstName: String,
@@ -26,7 +28,7 @@ userSchema.pre("save", async function() {
   }
 });
 
-userSchema.methods.correctPassword = function(password) {
+userSchema.methods.verifyPassword = function(password) {
   return compare(password, this.password);
 };
 

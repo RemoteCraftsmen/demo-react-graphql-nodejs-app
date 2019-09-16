@@ -19,7 +19,8 @@ exports.tryToSignIn = async (email, password) => {
   if (!user) {
     throw new AuthenticationError("Incorrect email or password.");
   }
-  if (await !user.correctPassword(password)) {
+  const checkPassword = await user.verifyPassword(password);
+  if (!checkPassword) {
     throw new AuthenticationError("Incorrect email or password.");
   }
   return user;
