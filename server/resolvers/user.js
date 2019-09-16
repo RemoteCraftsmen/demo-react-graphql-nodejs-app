@@ -28,8 +28,11 @@ const user = {
     signUp: async (root, args, { req }, info) => {
       Auth.checkSignedOut(req);
       await Joi.validate(args, signUp, { abortEarly: false });
+      let findUser = await User.findOne({ email: args.email });
+      if (findUser) {
+        throw new UserInputError("Email already exists!");
+      }
       const user = await User.create(args);
-      //req.session.userId = user.id; Logs in user after sign up
       return user;
     },
     signIn: async (root, args, { req }, info) => {

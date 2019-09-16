@@ -3,7 +3,6 @@ import { Switch, Route } from "react-router-dom";
 import TodoPanel from "./TodoPanel";
 import Signup from "./Signup";
 import Login from "./Login";
-import Navbar from "./Navbar";
 import PrivateRoute from "./PrivateRoute";
 
 class App extends Component {

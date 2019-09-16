@@ -4,7 +4,7 @@ const { hash, compare } = require("bcryptjs");
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    validate: [email => User.doesntExists({ email }), "Email already exists!"]
+    unique: true
   },
   firstName: String,
   lastName: String,
@@ -25,10 +25,6 @@ userSchema.pre("save", async function() {
 
 userSchema.methods.verifyPassword = function(password) {
   return compare(password, this.password);
-};
-
-userSchema.statics.doesntExists = async function(options) {
-  return (await this.where(options).countDocuments()) === 0;
 };
 
 const User = mongoose.model("User", userSchema);
