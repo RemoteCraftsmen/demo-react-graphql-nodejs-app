@@ -4,12 +4,7 @@ const { hash, compare } = require("bcryptjs");
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    validate: {
-      validator: email => User.doesntExists({ email }),
-      message: () => {
-        return new Error("Email already exists!");
-      }
-    }
+    validate: [email => User.doesntExists({ email }), "Email already exists!"]
   },
   firstName: String,
   lastName: String,
