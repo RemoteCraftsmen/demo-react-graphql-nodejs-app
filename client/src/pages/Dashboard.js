@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import TodoList from "./TodoList";
+import TodoList from "../components/TodoList";
 import { Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import AddTodo from "./AddTodo";
-import AppBar from "./AppBar";
+import AddTodo from "../components/AddTodo";
+import AppBar from "../components/AppBar";
 
 const styles = theme => ({
   root: {

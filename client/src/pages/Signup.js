@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { withStyles } from "@material-ui/core/styles";
 import {
   Container,
-  TextField,
   Button,
+  TextField,
   Grid,
   Typography,
   Link,
   Avatar,
   FormLabel
 } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
 import { graphql } from "react-apollo";
-import { LOGIN_MUTATION } from "../utils/UserRequests";
+import { SIGNUP_MUTATION } from "../utils/userRequests";
 
 const styles = theme => ({
   root: {
@@ -22,12 +22,12 @@ const styles = theme => ({
     flexDirection: "column",
     alignItems: "center"
   },
+  form: {
+    marginTop: theme.spacing(2)
+  },
   avatar: {
     margin: "10px",
     backgroundColor: "#1a49a4"
-  },
-  form: {
-    marginTop: theme.spacing(2)
   },
   button: {
     margin: theme.spacing(3, 0, 2),
@@ -35,8 +35,10 @@ const styles = theme => ({
   }
 });
 
-class Login extends Component {
+class Register extends Component {
   state = {
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     errors: []
@@ -47,19 +49,20 @@ class Login extends Component {
   };
 
   onSubmit = e => {
-    const { email, password } = this.state;
+    const { email, password, firstName, lastName } = this.state;
     e.preventDefault();
     this.props
       .mutate({
-        mutation: LOGIN_MUTATION,
+        mutation: SIGNUP_MUTATION,
         variables: {
           email,
-          password
-        },
-        refetchQueries: ["Me"]
+          password,
+          firstName,
+          lastName
+        }
       })
       .then(() => {
-        this.props.history.push("/dashboard");
+        this.props.history.push("/login");
       })
       .catch(err => {
         this.setState({
@@ -76,7 +79,7 @@ class Login extends Component {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h4" align="center">
-          Login
+          Sign up
         </Typography>
         <form
           className={classes.form}
@@ -85,21 +88,47 @@ class Login extends Component {
           }}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 autoFocus
+                autoComplete="firstName"
+                name="firstName"
+                variant="outlined"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                value={this.state.firstName}
+                onChange={this.onChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="lastName"
+                value={this.state.lastName}
+                onChange={this.onChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
                 autoComplete="email"
                 name="email"
                 variant="outlined"
                 required
                 fullWidth
                 id="email"
-                type="email"
                 label="Email"
                 value={this.state.email}
                 onChange={this.onChange}
               />
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 autoComplete="password"
@@ -125,13 +154,13 @@ class Login extends Component {
             variant="contained"
             color="primary"
           >
-            SIGN IN
+            Sign up
           </Button>
         </form>
         <Grid container justify="flex-end">
           <Grid item>
-            <Link component={RouterLink} to="/signup" variant="body2">
-              Don't have an account? Sign up
+            <Link component={RouterLink} to="/login" variant="body2">
+              Already have an account? Sign in
             </Link>
           </Grid>
         </Grid>
@@ -140,4 +169,4 @@ class Login extends Component {
   }
 }
 
-export default graphql(LOGIN_MUTATION)(withStyles(styles)(Login));
+export default graphql(SIGNUP_MUTATION)(withStyles(styles)(Register));

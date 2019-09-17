@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { Query } from "react-apollo";
-import { IS_LOGGED_IN_QUERY } from "../utils/UserRequests";
+import { IS_LOGGED_IN_QUERY } from "../utils/userRequests";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Query query={IS_LOGGED_IN_QUERY} fetchPolicy="network-only">

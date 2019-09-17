@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Toolbar, Typography, Button } from "@material-ui/core";
 import { graphql } from "react-apollo";
-import { SIGNOUT_MUTATION } from "../utils/UserRequests";
+import { SIGNOUT_MUTATION } from "../utils/userRequests";
 
 const styles = theme => ({
   toolbar: {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Todo from "./Todo";
-import { GET_TODOS_QUERY } from "../utils/TodoRequests";
+import { GET_TODOS_QUERY } from "../utils/todoRequests";
 import { Query } from "react-apollo";
 import { List } from "@material-ui/core";
 

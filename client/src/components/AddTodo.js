@@ -8,7 +8,7 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import AddCircle from "@material-ui/icons/AddCircle";
 import { graphql } from "react-apollo";
-import { ADD_TODO_MUTATION } from "../utils/TodoRequests";
+import { ADD_TODO_MUTATION } from "../utils/todoRequests";
 
 const styles = {
   root: {

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-import TodoPanel from "./TodoPanel";
-import Signup from "./Signup";
-import Login from "./Login";
-import PrivateRoute from "./PrivateRoute";
+import TodoPanel from "./pages/Dashboard";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import PrivateRoute from "./components/PrivateRoute";
 
 class App extends Component {
   render() {

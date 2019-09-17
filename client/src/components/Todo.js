@@ -12,7 +12,7 @@ import { graphql } from "react-apollo";
 import {
   DELETE_TODO_MUTATION,
   UPDATE_TODO_MUTATION
-} from "../utils/TodoRequests";
+} from "../utils/todoRequests";
 
 class Todo extends Component {
   updateTodo = e => {
