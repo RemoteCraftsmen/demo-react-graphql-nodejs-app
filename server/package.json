@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*.test.js",
+    "test": "jest",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
@@ -13,7 +13,9 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "concurrently": "^4.1.1",
+    "easygraphql-tester": "^5.1.6",
     "express-session": "^1.16.2",
+    "jest": "^24.9.0",
     "mocha": "^6.2.0",
     "nodemon": "^1.19.1",
     "supertest": "^4.0.2"

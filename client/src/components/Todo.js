@@ -47,9 +47,7 @@ class Todo extends Component {
         }}
         button
         dense
-        onClick={e => {
-          this.updateTodo(e);
-        }}
+        onClick={this.updateTodo}
       >
         <ListItemIcon>
           <Checkbox
@@ -58,20 +56,12 @@ class Todo extends Component {
             checked={completed}
             tabIndex={-1}
             disableRipple
-            onChange={e => {
-              this.updateTodo(e);
-            }}
+            onChange={this.updateTodo}
           />
         </ListItemIcon>
         <ListItemText primary={description} />
         <ListItemSecondaryAction>
-          <IconButton
-            edge="end"
-            aria-label="delete"
-            onClick={e => {
-              this.deleteTodo(e);
-            }}
-          >
+          <IconButton edge="end" aria-label="delete" onClick={this.deleteTodo}>
             <DeleteIcon />
           </IconButton>
         </ListItemSecondaryAction>

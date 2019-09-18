@@ -61,12 +61,7 @@ class AddTodo extends Component {
     const { classes } = this.props;
     return (
       <Container className={classes.root}>
-        <form
-          className={classes.input}
-          onSubmit={e => {
-            this.addTodo(e);
-          }}
-        >
+        <form className={classes.input} onSubmit={this.addTodo}>
           <TextField
             fullWidth
             variant="outlined"
