@@ -7,7 +7,7 @@ import PrivateRoute from "./components/PrivateRoute";
 
 const App = () => (
   <Switch>
-    <Route exact path="/" component={Login} />
+    <PrivateRoute exact path="/" component={Dashboard} />
     <Route exact path="/signup" component={Signup} />
     <Route exact path="/login" component={Login} />
     <PrivateRoute exact path="/dashboard" component={Dashboard} />

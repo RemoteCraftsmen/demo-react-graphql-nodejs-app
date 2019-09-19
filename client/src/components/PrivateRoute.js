@@ -16,7 +16,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
               !data.me || data.me === null ? (
                 <Redirect
                   to={{
-                    pathname: "/"
+                    pathname: "/login"
                   }}
                 />
               ) : (
