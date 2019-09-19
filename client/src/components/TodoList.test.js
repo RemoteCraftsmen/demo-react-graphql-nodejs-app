@@ -4,7 +4,6 @@ import { mount } from "../../enzyme";
 import { MockedProvider } from "react-apollo/test-utils";
 import TodoList from "./TodoList";
 import { GET_TODOS_QUERY } from "../utils/todoRequests";
-import { Container } from "@material-ui/core";
 
 it("should render without error", () => {
   mount(
@@ -24,7 +23,7 @@ it("should render loading state initially", () => {
   expect(component.find("div").text()).toEqual("Loading...");
 });
 
-/* it("should return todos", async () => {
+it("should return todos", async () => {
   let getTodos = false;
   const mock = {
     request: {
@@ -53,4 +52,4 @@ it("should render loading state initially", () => {
 
   component.update();
   expect(getTodos).toBe(true);
-}); */
+});

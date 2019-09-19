@@ -2,7 +2,7 @@ import React from "react";
 import wait from "waait";
 import { mount } from "../../enzyme";
 import { MockedProvider } from "react-apollo/test-utils";
-import { ListItem, Checkbox } from "@material-ui/core";
+import { ListItem } from "@material-ui/core";
 import Todo from "./Todo";
 import {
   DELETE_TODO_MUTATION,
