@@ -11,8 +11,19 @@ const IN_PROD = config.app.env === "production";
 
 const app = express();
 
+const originsWhitelist = ["http://localhost:8080", config.app.frontendUrl];
 const corsOptions = {
-  origin: "http://localhost:8080",
+  origin(origin, callback) {
+    if (
+      originsWhitelist.includes(origin) ||
+      origin.includes("//localhost:") ||
+      !origin
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 };
 

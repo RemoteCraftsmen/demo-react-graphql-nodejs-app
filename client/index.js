@@ -12,7 +12,7 @@ const theme = createMuiTheme();
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: "http://localhost:4000/graphql",
+  uri: process.env.REACT_APP_BACKEND_URL,
   credentials: "include"
 });
 
@@ -24,6 +24,8 @@ const client = new ApolloClient({
     console.log("networkError", networkError);
   }
 });
+
+console.log(process.env);
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>

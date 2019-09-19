@@ -6,7 +6,8 @@ const isEnabled = key => env(key) && env(key) === "true";
 const config = {
   app: {
     env: env("NODE_ENV"),
-    port: parseInt(env("PORT", 4000))
+    port: parseInt(env("PORT", 4000)),
+    frontendUrl: env("FRONTEND_URL")
   },
   db: {
     user: env("DB_USER"),
