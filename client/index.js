@@ -25,8 +25,6 @@ const client = new ApolloClient({
   }
 });
 
-console.log(process.env);
-
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <BrowserRouter>

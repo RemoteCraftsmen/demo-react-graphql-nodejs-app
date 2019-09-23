@@ -55,8 +55,7 @@ const store = new RedisStore({
   port: config.redis.port
 });
 
-app.use(
-  session({
+let sessionConfig = {
     store,
     name: config.session.name,
     secret: config.session.secret,
@@ -64,12 +63,17 @@ app.use(
     rolling: true,
     saveUninitialized: false,
     cookie: {
-      maxAge: config.session.lifetime,
-      sameSite: true,
-      secure: IN_PROD
+        maxAge: config.session.lifetime,
+        sameSite: true
     }
-  })
-);
+};
+
+if (IN_PROD) {
+    app.set('trust proxy', 1);
+    sessionConfig.cookie.secure = true;
+}
+
+app.use(session(sessionConfig));
 
 const server = new ApolloServer({
   typeDefs,
