@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import { Toolbar, Typography, Button } from "@material-ui/core";
 import { graphql } from "react-apollo";
@@ -53,4 +54,6 @@ class AppBar extends Component {
   }
 }
 
-export default graphql(SIGNOUT_MUTATION)(withStyles(styles)(AppBar));
+export default withRouter(
+  graphql(SIGNOUT_MUTATION)(withStyles(styles)(AppBar))
+);
