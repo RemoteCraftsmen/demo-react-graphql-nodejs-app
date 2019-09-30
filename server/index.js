@@ -10,7 +10,6 @@ const config = require("./config");
 const IN_PROD = config.app.env === "production";
 
 const app = express();
-
 const originsWhitelist = ["http://localhost:8080", config.app.frontendUrl];
 const corsOptions = {
   origin(origin, callback) {
