@@ -13,7 +13,6 @@ const app = express();
 const originsWhitelist = ["http://localhost:8080", config.app.frontendUrl];
 const corsOptions = {
   origin(origin, callback) {
-    console.log("Origin: ", origin);
     if (
       !origin ||
       originsWhitelist.includes(origin) ||
