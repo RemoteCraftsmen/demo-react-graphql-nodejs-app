@@ -1,0 +1,13 @@
+{
+  "apps" : [
+    {
+      "name"        : "react-graphql-api",
+      "script"      : "./index.js",
+      "watch"       : false,
+      "env_production" : {
+        "NODE_ENV": "production",
+        "PORT": "3050"
+      }
+    }
+  ]
+}
