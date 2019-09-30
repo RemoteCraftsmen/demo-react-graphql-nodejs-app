@@ -13,10 +13,11 @@ const app = express();
 const originsWhitelist = ["http://localhost:8080", config.app.frontendUrl];
 const corsOptions = {
   origin(origin, callback) {
+    console.log("Origin: ", origin);
     if (
+      !origin ||
       originsWhitelist.includes(origin) ||
-      origin.includes("//localhost:") ||
-      !origin
+      origin.includes("//localhost:")
     ) {
       callback(null, true);
     } else {
@@ -55,21 +56,21 @@ const store = new RedisStore({
 });
 
 let sessionConfig = {
-    store,
-    name: config.session.name,
-    secret: config.session.secret,
-    resave: true,
-    rolling: true,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: config.session.lifetime,
-        sameSite: true
-    }
+  store,
+  name: config.session.name,
+  secret: config.session.secret,
+  resave: true,
+  rolling: true,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: config.session.lifetime,
+    sameSite: true
+  }
 };
 
 if (IN_PROD) {
-    app.set('trust proxy', 1);
-    sessionConfig.cookie.secure = true;
+  app.set("trust proxy", 1);
+  sessionConfig.cookie.secure = true;
 }
 
 app.use(session(sessionConfig));
