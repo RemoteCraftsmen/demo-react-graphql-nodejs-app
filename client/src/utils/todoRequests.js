@@ -16,6 +16,14 @@ export const UPDATE_TODO_MUTATION = gql`
   }
 `;
 
+export const EDIT_TODO_MUTATION = gql`
+  mutation editTodo($id: ID!, $description: String!) {
+    editTodo(id: $id, description: $description) {
+      description
+    }
+  }
+`;
+
 export const ADD_TODO_MUTATION = gql`
   mutation createTodo($description: String!) {
     createTodo(description: $description) {

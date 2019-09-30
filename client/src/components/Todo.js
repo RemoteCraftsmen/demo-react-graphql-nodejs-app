@@ -5,16 +5,24 @@ import {
   ListItemSecondaryAction,
   IconButton,
   ListItemIcon,
-  Checkbox
+  Checkbox,
+  Tooltip
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import { graphql } from "react-apollo";
 import {
   DELETE_TODO_MUTATION,
+  EDIT_TODO_MUTATION,
   UPDATE_TODO_MUTATION
 } from "../utils/todoRequests";
+import TodoEditDialog from "./TodoEditDialog";
 
 class Todo extends Component {
+  state = {
+    open: false
+  };
+
   updateTodo = e => {
     e.preventDefault();
     this.props.mutate({
@@ -36,6 +44,27 @@ class Todo extends Component {
       },
       refetchQueries: ["TodosQuery"]
     });
+  };
+
+  editTodo = description => {
+    this.closeEditDialog();
+    this.props.mutate({
+      mutation: EDIT_TODO_MUTATION,
+      variables: {
+        id: this.props.todo.id,
+        description: description
+      },
+      refetchQueries: ["TodosQuery"]
+    });
+    console.log(description);
+  };
+
+  showEditDialog = () => {
+    this.setState({ open: true });
+  };
+
+  closeEditDialog = () => {
+    this.setState({ open: false });
   };
 
   render() {
@@ -61,9 +90,25 @@ class Todo extends Component {
         </ListItemIcon>
         <ListItemText primary={description} />
         <ListItemSecondaryAction>
-          <IconButton edge="end" aria-label="delete" onClick={this.deleteTodo}>
-            <DeleteIcon />
-          </IconButton>
+          <Tooltip title="Edit">
+            <IconButton aria-label="edit" onClick={this.showEditDialog}>
+              <EditIcon color="primary" />
+            </IconButton>
+          </Tooltip>
+          <TodoEditDialog
+            open={this.state.open}
+            handleClose={this.closeEditDialog}
+            handleEdit={this.editTodo}
+          ></TodoEditDialog>
+          <Tooltip title="Delete">
+            <IconButton
+              edge="end"
+              aria-label="delete"
+              onClick={this.deleteTodo}
+            >
+              <DeleteIcon color="primary" />
+            </IconButton>
+          </Tooltip>
         </ListItemSecondaryAction>
       </ListItem>
     );

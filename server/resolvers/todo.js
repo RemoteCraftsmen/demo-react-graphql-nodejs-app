@@ -40,6 +40,12 @@ const todo = {
     deleteTodo: async (root, args, { req }, info) => {
       checkSignedIn(req);
       return await Todo.findByIdAndDelete(args.id);
+    },
+    editTodo: async (root, args, { req }, info) => {
+      checkSignedIn(req);
+      return await Todo.findByIdAndUpdate(args.id, {
+        $set: { description: args.description }
+      });
     }
   },
   Todo: {

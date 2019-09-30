@@ -8,6 +8,7 @@ const todo = gql`
   extend type Mutation {
     createTodo(description: String!): Todo
     updateTodo(id: ID!, completed: Boolean!): Todo
+    editTodo(id: ID!, description: String!): Todo
     deleteTodo(id: ID!): Todo
   }
   type Todo {
