@@ -22,7 +22,7 @@ const styles = theme => ({
 
 class TodoEditDialog extends Component {
   state = {
-    description: ""
+    description: this.props.description
   };
 
   render() {

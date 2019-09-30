@@ -56,7 +56,6 @@ class Todo extends Component {
       },
       refetchQueries: ["TodosQuery"]
     });
-    console.log(description);
   };
 
   showEditDialog = () => {
@@ -97,6 +96,7 @@ class Todo extends Component {
           </Tooltip>
           <TodoEditDialog
             open={this.state.open}
+            description={description}
             handleClose={this.closeEditDialog}
             handleEdit={this.editTodo}
           ></TodoEditDialog>
