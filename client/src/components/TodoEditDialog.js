@@ -53,8 +53,8 @@ class TodoEditDialog extends Component {
         <DialogActions>
           <Button
             onClick={() => {
-              this.setState({ description: " " });
               handleClose();
+              this.setState({ description: this.props.description });
             }}
             color="primary"
           >
@@ -62,7 +62,6 @@ class TodoEditDialog extends Component {
           </Button>
           <Button
             onClick={() => {
-              this.setState({ description: " " });
               handleEdit(this.state.description);
             }}
             color="primary"
