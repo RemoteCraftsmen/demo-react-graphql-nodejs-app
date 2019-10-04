@@ -15,6 +15,7 @@ const todo = gql`
     id: ID!
     description: String!
     completed: Boolean
+    updatedAt: String
     user: User!
   }
 `;
