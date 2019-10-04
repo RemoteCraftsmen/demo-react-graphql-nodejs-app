@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  List,
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
@@ -69,48 +70,50 @@ class Todo extends Component {
   render() {
     const { completed, description } = this.props.todo;
     return (
-      <ListItem
-        style={{
-          textDecoration: completed ? "line-through" : "none"
-        }}
-        button
-        dense
-        onClick={this.updateTodo}
-      >
-        <ListItemIcon>
-          <Checkbox
-            edge="start"
-            color="primary"
-            checked={completed}
-            tabIndex={-1}
-            disableRipple
-            onChange={this.updateTodo}
-          />
-        </ListItemIcon>
-        <ListItemText primary={description} />
-        <ListItemSecondaryAction>
-          <Tooltip title="Edit">
-            <IconButton aria-label="edit" onClick={this.showEditDialog}>
-              <EditIcon color="primary" />
-            </IconButton>
-          </Tooltip>
-          <TodoEditDialog
-            open={this.state.open}
-            description={description}
-            handleClose={this.closeEditDialog}
-            handleEdit={this.editTodo}
-          ></TodoEditDialog>
-          <Tooltip title="Delete">
-            <IconButton
-              edge="end"
-              aria-label="delete"
-              onClick={this.deleteTodo}
-            >
-              <DeleteIcon color="primary" />
-            </IconButton>
-          </Tooltip>
-        </ListItemSecondaryAction>
-      </ListItem>
+      <List>
+        <ListItem
+          style={{
+            textDecoration: completed ? "line-through" : "none"
+          }}
+          button
+          dense
+          onClick={this.updateTodo}
+        >
+          <ListItemIcon>
+            <Checkbox
+              edge="start"
+              color="primary"
+              checked={completed}
+              tabIndex={-1}
+              disableRipple
+              onChange={this.updateTodo}
+            />
+          </ListItemIcon>
+          <ListItemText primary={description} />
+          <ListItemSecondaryAction>
+            <Tooltip title="Edit">
+              <IconButton aria-label="edit" onClick={this.showEditDialog}>
+                <EditIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+            <TodoEditDialog
+              open={this.state.open}
+              description={description}
+              handleClose={this.closeEditDialog}
+              handleEdit={this.editTodo}
+            ></TodoEditDialog>
+            <Tooltip title="Delete">
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                onClick={this.deleteTodo}
+              >
+                <DeleteIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+          </ListItemSecondaryAction>
+        </ListItem>
+      </List>
     );
   }
 }
