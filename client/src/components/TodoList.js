@@ -17,9 +17,12 @@ const TodoList = () => (
           </div>
         );
       if (error) console.log(error);
+      const sortedData = data.userTodos.sort(
+        (a, b) => a.completed - b.completed || b.updatedAt - a.updatedAt
+      );
       return (
         <List>
-          {data.userTodos.map(todo => (
+          {sortedData.map(todo => (
             <Todo key={todo.id} todo={todo} />
           ))}
         </List>
