@@ -28,15 +28,17 @@ class TodoList extends Component {
                 (a.completed === false && b.createdAt - a.createdAt))
           );
           return (
-            <FlipMove
-              enterAnimation="fade"
-              leaveAnimation="fade"
-              appearAnimation="accordionVertical"
-            >
-              {sortedData.map(todo => (
-                <Todo key={todo.id} todo={todo} />
-              ))}
-            </FlipMove>
+            <List>
+              <FlipMove
+                enterAnimation="fade"
+                leaveAnimation="fade"
+                appearAnimation="accordionVertical"
+              >
+                {sortedData.map(todo => (
+                  <Todo key={todo.id} todo={todo} />
+                ))}
+              </FlipMove>
+            </List>
           );
         }}
       </Query>
