@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { graphql } from "react-apollo";
 import {
   ListItem,
   ListItemText,
@@ -10,7 +11,7 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import { graphql } from "react-apollo";
+
 import {
   DELETE_TODO_MUTATION,
   EDIT_TODO_MUTATION,

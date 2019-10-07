@@ -33,6 +33,7 @@ const user = {
         throw new UserInputError("Email already exists!");
       }
       const user = await User.create(args);
+      req.session.userId = user.id;
       return user;
     },
     signIn: async (root, args, { req }, info) => {
