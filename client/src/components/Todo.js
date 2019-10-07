@@ -75,6 +75,7 @@ class Todo extends Component {
           textDecoration: completed ? "line-through" : "none"
         }}
         button
+        divider
         dense
         onClick={this.updateTodo}
       >

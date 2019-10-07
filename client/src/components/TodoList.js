@@ -2,13 +2,27 @@ import React, { Component } from "react";
 import Todo from "./Todo";
 import { GET_TODOS_QUERY } from "../utils/todoRequests";
 import { Query } from "react-apollo";
-import { List } from "@material-ui/core";
+import { List, TablePagination } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import FlipMove from "react-flip-move";
 
 class TodoList extends Component {
+  state = {
+    page: 0,
+    rowsPerPage: 5
+  };
+
+  handleChangePage = (e, page) => {
+    this.setState({ page });
+  };
+
+  handleChangeRowsPerPage = e => {
+    this.setState({ rowsPerPage: e.target.value, page: 0 });
+  };
+
   render() {
+    const { page, rowsPerPage } = this.state;
     return (
       <Query query={GET_TODOS_QUERY} fetchPolicy="network-only">
         {({ loading, error, data }) => {
@@ -28,17 +42,32 @@ class TodoList extends Component {
                 (a.completed === false && b.createdAt - a.createdAt))
           );
           return (
-            <List>
-              <FlipMove
-                enterAnimation="fade"
-                leaveAnimation="fade"
-                appearAnimation="accordionVertical"
-              >
-                {sortedData.map(todo => (
-                  <Todo key={todo.id} todo={todo} />
-                ))}
-              </FlipMove>
-            </List>
+            <div>
+              <List>
+                <FlipMove
+                  enterAnimation="fade"
+                  leaveAnimation="fade"
+                  appearAnimation="accordionVertical"
+                >
+                  {sortedData
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map(todo => (
+                      <Todo key={todo.id} todo={todo} />
+                    ))}
+                </FlipMove>
+              </List>
+              {sortedData.length > 0 && (
+                <TablePagination
+                  component="div"
+                  rowsPerPageOptions={[5, 10, 25]}
+                  count={sortedData.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onChangePage={this.handleChangePage}
+                  onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                />
+              )}
+            </div>
           );
         }}
       </Query>
