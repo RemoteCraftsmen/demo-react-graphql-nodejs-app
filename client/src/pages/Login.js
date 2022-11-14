@@ -17,12 +17,13 @@ import { LOGIN_MUTATION } from "../utils/userRequests";
 
 const styles = theme => ({
   root: {
-    marginTop: theme.spacing(24),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   avatar: {
+    marginTop: theme.spacing(24),
     margin: "10px",
     backgroundColor: "#1a49a4"
   },
