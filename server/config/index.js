@@ -23,7 +23,7 @@ const config = {
     env: env("NODE_ENV"),
     port: parseInt(env("PORT", 4000)),
     frontendUrl: env("FRONTEND_URL"),
-    corsSites: env('CORS_SITES')
+    corsSites: env('CORS_SITES', '')
   },
   db: {
     url: `mongodb://${env('MONGO_ROOT', 'guest')}:${env('MONGO_PASS', 'guest')}@${env(
