@@ -4,11 +4,12 @@ const mongoose = require("mongoose");
 
 const typeDefs = require("./types");
 const resolvers = require("./resolvers");
-const { db, app: { isProduction, port, frontendUrl } } = require("./config");
+const { db, app: { corsSites, isProduction, port, frontendUrl } } = require("./config");
 
 const app = express();
 
-const originsWhitelist = ["http://localhost:8080", frontendUrl];
+const corsAllowedSites = corsSites.split(',').map(site => site.trim());
+const originsWhitelist = ["http://localhost:8080", frontendUrl, ...corsAllowedSites];
 const corsOptions = {
   origin(origin, callback) {
     if (
