@@ -17,15 +17,16 @@ import { SIGNUP_MUTATION } from "../utils/userRequests";
 
 const styles = theme => ({
   root: {
-    marginTop: theme.spacing(24),
     display: "flex",
     flexDirection: "column",
+    justifyContent: 'center',
     alignItems: "center"
   },
   form: {
     marginTop: theme.spacing(2)
   },
   avatar: {
+    marginTop: theme.spacing(24),
     margin: "10px",
     backgroundColor: "#1a49a4"
   },

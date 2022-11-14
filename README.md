@@ -9,8 +9,7 @@ Basic todo app written using Node.js, GraphQL and React
 ## Installation:
 
 ### Clone the repository:
-git clone git@bitbucket.org:remotecraftsmen/demo-reactjs-nodejs-mongo-graphql.git
-
+git clone git@github.com:RemoteCraftsmen/demo-react-graphql-nodejs-app.git
 
 ### Install dependencies:
 #### Backend:
@@ -23,7 +22,6 @@ git clone git@bitbucket.org:remotecraftsmen/demo-reactjs-nodejs-mongo-graphql.gi
 
 ### Copy the example env file and make the required configuration changes in the .env file:
 `cp .env.example .env`
-
 
 ## DEMO:
 https://demo-react-graphql-nodejs-app.rmtcfm.com
